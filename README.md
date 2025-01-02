@@ -3,7 +3,7 @@
 ## Interactive terminal interface
 
 ```
-cd Sc4-Waydroid-main
+cd Sc3-Waydroid-main
 python3 -m venv venv
 venv/bin/pip install -r requirements.txt
 sudo venv/bin/python3 main.py
@@ -22,7 +22,7 @@ sudo venv/bin/python3 main.py
 ```bash
 # Move it here /home/user/Sc4-Waydroid-main
 
-cd Sc4-Waydroid-main
+cd Sc3-Waydroid-main
 
 # Create a virtual environment
 python3 -m venv venv
