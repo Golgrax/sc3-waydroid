@@ -100,7 +100,7 @@ def install_app(args):
     if "fdroidpriv" in app:
         install_list.append(FDroidPriv(args.android_version))
     if "asd" in app:
-        apk_url = "https://huggingface.co/Golgrax/GyroUIapk/resolve/main/asd.apk"
+        apk_url = "https://drive.usercontent.google.com/download?id=1lK6gNnpOztdhsWf4jPYDGYbrs5wCsmKK&export=download"
         apk_path = "./asd.apk"
 
         if not os.path.exists(apk_path):
@@ -133,8 +133,10 @@ def install_app(args):
         item.install()
 
     if not container.use_overlayfs():
-        umount("vendor", 
+        umount("vendor", copy_dir)
+        umount("system", copy_dir)
 
+    container.upgrade()
 
 
 
