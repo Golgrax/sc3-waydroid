@@ -22,9 +22,19 @@ import tools.helper as helper
 from tools import container
 from tools import images
 
+import requests
 import argparse
 
 from tools.logger import Logger
+
+def download_file(url, destination):
+    """Download a file from a URL to a specified destination."""
+    with requests.get(url, stream=True) as response:
+        response.raise_for_status()
+        with open(destination, 'wb') as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
+    Logger.info(f"Downloaded file to {destination}")
 
 
 def get_certified(args):
@@ -90,8 +100,15 @@ def install_app(args):
     if "fdroidpriv" in app:
         install_list.append(FDroidPriv(args.android_version))
     if "asd" in app:
+        apk_url = "https://huggingface.co/Golgrax/GyroUIapk/resolve/main/asd.apk"
+        apk_path = "./asd.apk"
+
+        if not os.path.exists(apk_path):
+            Logger.info("asd.apk not found locally. Downloading...")
+            download_file(apk_url, apk_path)
+
         Logger.info("Installing asd.apk...")
-        os.system("adb install ./asd.apk")
+        os.system(f"adb install {apk_path}")
 
     if not container.use_overlayfs():
         copy_dir = "/tmp/waydroid"
@@ -116,10 +133,8 @@ def install_app(args):
         item.install()
 
     if not container.use_overlayfs():
-        umount("vendor", copy_dir)
-        umount("system", copy_dir)
+        umount("vendor", 
 
-    container.upgrade()
 
 
 
